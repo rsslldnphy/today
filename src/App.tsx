@@ -8,7 +8,7 @@ import isTomorrow from "date-fns/isTomorrow";
 import format from "date-fns/format";
 import { ByCinema } from "./ByCinema";
 import { ByFilm } from "./ByFilm";
-import { Route, Routes, useParams } from "react-router";
+import { useParams } from "react-router";
 
 function App() {
   const { date, tab } = useParams();
