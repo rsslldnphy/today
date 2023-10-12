@@ -1,7 +1,5 @@
 import * as api from "../api";
-import { useQuery } from "@tanstack/react-query";
 import * as UI from "@mui/material";
-import { OpenInNew } from "@mui/icons-material";
 import _ from "lodash";
 import format from "date-fns/format";
 
