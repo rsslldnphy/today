@@ -1,4 +1,5 @@
 import axios from "axios";
+import grid from "../images/grid.jpg";
 
 export type Showing = {
   starts_at: string;
@@ -28,5 +29,5 @@ export const poster = async (film: string) => {
   );
   const result = response.data.results[0]?.backdrop_path;
 
-  return result ? `https://image.tmdb.org/t/p/w500/${result}` : "/grid.jpg";
+  return result ? `https://image.tmdb.org/t/p/w500/${result}` : grid;
 };
