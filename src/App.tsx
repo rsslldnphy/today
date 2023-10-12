@@ -2,30 +2,35 @@ import * as UI from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import * as api from "./api";
 import _ from "lodash";
-import { useState } from "react";
+import { useEffect } from "react";
 import isToday from "date-fns/isToday";
 import isTomorrow from "date-fns/isTomorrow";
 import format from "date-fns/format";
 import { ByCinema } from "./ByCinema";
 import { ByFilm } from "./ByFilm";
+import { Route, Routes, useParams } from "react-router";
 
 function App() {
-  const page = window.location.pathname.includes("by-cinema")
-    ? "by-cinema"
-    : "by-film";
+  const { date, tab } = useParams();
 
-  const { data } = useQuery(["curzon"], api.curzon);
-
-  const [tab, setTab] = useState(0);
   const hidden = UI.useMediaQuery("300px");
-  if (!data) return null;
-  const dates = hidden ? Object.keys(data) : _.take(Object.keys(data), 3);
+  const { data } = useQuery(["curzon"], api.curzon);
+  const dates =
+    (data && (hidden ? Object.keys(data) : _.take(Object.keys(data), 3))) ?? [];
 
-  const films = _.sortBy(data[dates[tab]], "title");
+  useEffect(() => {
+    if (!date && data && Object.keys(data)[0]) {
+      window.location.href = `/today/${Object.keys(data)[0]}/by-film`;
+    }
+  }, [date, data]);
+
+  if (!data) return null;
+
+  const films = _.sortBy(data[date!], "title");
   return (
     <>
       <UI.AppBar position="fixed" color="default">
-        <UI.Tabs value={tab} onChange={(_, value) => setTab(value)} centered>
+        <UI.Tabs value={date} centered>
           {dates.map((dateString, index) => {
             const date = new Date(dateString);
             const label = isToday(date)
@@ -37,6 +42,8 @@ function App() {
               <UI.Tab
                 key={dateString}
                 label={label}
+                value={dateString}
+                href={`/today/${dateString}/${tab}`}
                 sx={{
                   display: { xl: index > 2 ? "none" : "block", sm: "block" },
                 }}
@@ -47,45 +54,8 @@ function App() {
       </UI.AppBar>
       <UI.Toolbar></UI.Toolbar>
 
-      <UI.Box sx={{ textAlign: "center", my: 1 }}>
-        {page === "by-film" && (
-          <>
-            <UI.Typography
-              sx={{ px: 2, display: "inline", fontWeight: "bold" }}
-            >
-              By Film
-            </UI.Typography>
-            <UI.Link
-              href="/today/by-cinema"
-              sx={{ px: 2, display: "inline" }}
-              color="#666"
-            >
-              By Cinema
-            </UI.Link>
-          </>
-        )}
-        {page === "by-cinema" && (
-          <>
-            <UI.Link
-              href="/today/"
-              sx={{ px: 2, display: "inline" }}
-              color="#666"
-            >
-              By Film
-            </UI.Link>
-            <UI.Typography
-              sx={{ px: 2, display: "inline", fontWeight: "bold" }}
-            >
-              By Cinema
-            </UI.Typography>
-          </>
-        )}
-      </UI.Box>
-      {page === "by-film" ? (
-        <ByFilm films={films} />
-      ) : (
-        <ByCinema films={films} />
-      )}
+      {tab === "by-film" && <ByFilm films={films} />}
+      {tab === "by-cinema" && <ByCinema films={films} />}
     </>
   );
 }
