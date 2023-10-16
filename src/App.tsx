@@ -68,7 +68,7 @@ function App() {
                   ? "Today"
                   : isTomorrow(date)
                   ? "Tomorrow"
-                  : format(date, "EEEE");
+                  : format(date, three ? "EE" : "EEEE");
                 return (
                   <UI.Tab
                     key={dateString}
