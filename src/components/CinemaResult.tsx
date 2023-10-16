@@ -1,23 +1,22 @@
-import * as api from "../api";
 import * as UI from "@mui/material";
-import _ from "lodash";
 import format from "date-fns/format";
+import { Film, Showing } from "../api/types";
 
 export const CinemaResult: React.FC<{
   cinema: string;
-  showtimes: (api.Showing & { film: api.Film })[];
+  showtimes: (Showing & { film: Film })[];
 }> = ({ cinema, showtimes }) => {
   [];
   return (
     <UI.Card elevation={2} sx={{ mb: 3 }}>
       <UI.CardContent>
         <UI.Typography variant="h5" component="div" sx={{ pb: 1 }}>
-          Curzon {cinema}
+          {cinema}
         </UI.Typography>
         {showtimes.map((showing) => (
           <UI.Typography key={showing.starts_at}>
             {format(new Date(showing.starts_at), "HH:mmaaa")} -{" "}
-            <UI.Link href={showing.film.trailer} target="_blank">
+            <UI.Link href={showing.url ?? showing.film.url} target="_blank">
               {" "}
               {showing.film.title}
             </UI.Link>

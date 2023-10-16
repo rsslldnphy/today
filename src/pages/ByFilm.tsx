@@ -1,6 +1,6 @@
-import * as api from "./api";
+import * as api from "../api";
 import * as UI from "@mui/material";
-import { FilmResult } from "./components/FilmResult";
+import { FilmResult } from "../components/FilmResult";
 import { useParams } from "react-router";
 
 export const ByFilm: React.FC<{ films: api.Film[] }> = ({ films }) => {

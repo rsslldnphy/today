@@ -1,10 +1,10 @@
-import * as api from "./api";
+import { Film } from "../api/types";
 import * as UI from "@mui/material";
-import { CinemaResult } from "./components/CinemaResult";
+import { CinemaResult } from "../components/CinemaResult";
 import _ from "lodash";
 import { useParams } from "react-router";
 
-export const ByCinema: React.FC<{ films: api.Film[] }> = ({ films }) => {
+export const ByCinema: React.FC<{ films: Film[] }> = ({ films }) => {
   const { date } = useParams();
   const listings = _.mapValues(
     _.groupBy(

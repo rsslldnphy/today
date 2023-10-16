@@ -1,20 +1,22 @@
 import * as UI from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
-import * as api from "./api";
-import _ from "lodash";
-import { useEffect } from "react";
+import format from "date-fns/format";
 import isToday from "date-fns/isToday";
 import isTomorrow from "date-fns/isTomorrow";
-import format from "date-fns/format";
-import { ByCinema } from "./ByCinema";
-import { ByFilm } from "./ByFilm";
+import _ from "lodash";
+import { useEffect } from "react";
 import { useParams } from "react-router";
+import { ByCinema } from "./pages/ByCinema";
+import { ByFilm } from "./pages/ByFilm";
+import * as api from "./api";
+import { useFilmsQuery } from "./api/useFilmsQuery";
 
 function App() {
   const { date, tab } = useParams();
 
   const hidden = UI.useMediaQuery("300px");
-  const { data } = useQuery(["curzon"], api.curzon);
+  const data = useFilmsQuery();
+
   const dates =
     (data && (hidden ? Object.keys(data) : _.take(Object.keys(data), 3))) ?? [];
 
