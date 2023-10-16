@@ -1,8 +1,8 @@
 import { Film, Metadata } from "../api/types";
 import * as UI from "@mui/material";
 import { OpenInNew } from "@mui/icons-material";
-import _ from "lodash";
 import format from "date-fns/format";
+import { groupBy, map } from "lodash";
 
 export const FilmResult: React.FC<{ film: Film & Metadata }> = ({ film }) => {
   [];
@@ -32,7 +32,7 @@ export const FilmResult: React.FC<{ film: Film & Metadata }> = ({ film }) => {
         <UI.Typography variant="body2" component="div">
           {film.overview}
         </UI.Typography>
-        {_.map(_.groupBy(film.times, "site"), (showings, site) => (
+        {map(groupBy(film.times, "site"), (showings, site) => (
           <UI.Box key={site} sx={{ my: 2 }}>
             <UI.Typography sx={{ fontWeight: "bold" }}>{site}</UI.Typography>
             {showings.map((showing) => (

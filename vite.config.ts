@@ -6,7 +6,9 @@ import path from "path";
 export default defineConfig({
   base: "/today/",
   plugins: [react()],
+  resolve: { alias: { lodash: "lodash-es" } },
   build: {
+    sourcemap: true,
     rollupOptions: {
       input: {
         main: path.join(__dirname, "index.html"),
